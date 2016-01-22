@@ -1,0 +1,17 @@
+---
+
+  - name: Setting up monitoring server
+    hosts: all
+    vars:
+      db: zabbix
+      dbuser: zabbix
+      dbpass: 1234
+    tasks:
+
+    - name: Install icinga packages
+      apt: name={{ items }} state=present
+      sudo: true
+      with_items:
+      -
+    - mysql_db: name={{ db }} state=present 
+    - mysql_user: name= {{ dbuser }} password={{ dbpass }} priv={{ db }}.*:ALL state=present
