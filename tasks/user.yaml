@@ -1,0 +1,7 @@
+---
+  - name: Creating users and groups
+  - group: name=zabbix state=present
+  - user: name=zabbix shell=/bin/false groups=zabbix append=yes
+  - sudo: true 
+  
+  

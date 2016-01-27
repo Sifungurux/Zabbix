@@ -1,0 +1,16 @@
+---
+#create userr/group first
+# mysql database configuration, when?
+
+- name: Downloading zabbix
+  shell: wget http://repo.zabbix.com/zabbix/2.4/debian/pool/main/z/zabbix/zabbix-server-mysql_2.4.7-1+jessie_amd64.deb
+  tags: zabbix install
+
+- name: Installing zabbix and depencies
+  shell: sudo dpkg --post-invoke="apt-get -f install -y" -i zabbix-server-mysql_2.4.7-1+jessie_amd64.deb
+  sudo: true
+  tags: zabbix install
+
+- name: Making sure mysql is up
+  action: service name=mysql state=started
+  tags: Zabbix install
