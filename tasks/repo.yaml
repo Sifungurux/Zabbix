@@ -1,0 +1,25 @@
+---
+
+- name: Wget zabbix repo
+  shell: wget -r --no-parent -A 'zabbix-release_{{ zabbix_version }}-*+{{ ansible_distribution_release  }}_all.deb'  http://repo.zabbix.com/zabbix/{{ zabbix_version  }}/{{ ansible_distribution  }}/pool/main/z/zabbix-release/ 
+  chdir: /tmp
+  tags: zabbix_install
+
+# Debian version - Check on linux distro before this task. Base it on fact ansible_distribution
+- name: Install zabbix repo
+  apt: dpkg repo.zabbix.com/zabbix/{{ zabbix_version  }}/{{ ansible_distribution  }}/pool/main/z/zabbix-release/zabbix-release_{{ zabbix_version }}-*+{{ ansible_distribution_release  }}_all.deb
+    dpkg_options: 'post-invoke="apt-get -f install -y"'
+  chdir: /tmp
+  tags: zabbix_install
+  when: {{  ansible_distribution  }} == 'debian'
+
+- name: Update packages repository
+  apt:
+    name: {{ item }}
+    update_cache: yes
+  with_items:
+    - "zabbix-server-{{ db }}"
+    - zabbix-frontend
+    - php5
+  when: {{  ansible_distribution  }} == 'debian'
+    
