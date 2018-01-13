@@ -3,12 +3,15 @@
 #########################################################################
 - name: Get repo name for latest
   shell: "curl http://repo.zabbix.com/zabbix/{{ zabbix_version  }}/debian/pool/main/z/zabbix-release/ | grep '{{ ansible_distribution_release  }}*_all.deb' | cut -f6 -d '\"'"
-  register: repo_name
+  register: "{{ repo_name.stdout }}"
+
+- set_fact:
+     ansible_zabbix_repo: repo_name
 
 # Debian settings
 - name: Wget zabbix repo
   get_url:
-    url: "http://repo.zabbix.com/zabbix/{{ zabbix_version  }}/debian/pool/main/z/zabbix-release/zabbix-release_{{ zabbix_version }}-1+{{ ansible_distribution_release  }}_all.deb"
+    url: "http://repo.zabbix.com/zabbix/{{ zabbix_version  }}/debian/pool/main/z/zabbix-release/{{ ansible_zabbix_repo }}"
     dest: /tmp
 #  when: {{  ansible_distribution  }} == 'debian'
   tags: 
@@ -17,7 +20,7 @@
 # Debian version - Check on linux distro before this task. Base it on fact ansible_distribution
 - name: Install zabbix repo
   apt: 
-    deb: "/tmp/zabbix-release_{{ zabbix_version }}-1+{{ ansible_distribution_release  }}_all.deb"
+    deb: "/tmp/{{ ansible_zabbix_repo }}"
     dpkg_options: 'post-invoke="apt-get -f install -y"'
 #  when: {{  ansible_distribution  }} == 'debian'
   tags: repo
