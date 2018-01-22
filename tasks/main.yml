@@ -1,2 +1,10 @@
 ---
-- include_tasks: tasks/repo.yaml
+
+
+- include_tasks: tasks/repo.debian.yml
+  when: ansible_os_family == "Debian"
+
+- include_tasks: tasks/repo.redhat.yml
+  when: ansible_os_family == "redhat"
+
+

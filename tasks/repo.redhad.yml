@@ -1,0 +1,15 @@
+---
+
+- name: Get latest Redhat zabbix repo
+  get_url:
+    url: "http://repo.zabbix.com/zabbix/{{ zabbix_version  }}/rhel/7/x86_64/{{ ansible_zabbix_repo }}"
+    dest: /tmp
+  tags: 
+    - repo
+
+- name: install zabbix rpm from a local file
+  yum:
+    name: "/tmp/{{ ansible_zabbix_repo }}"
+    state: present
+  tags:
+    - repo

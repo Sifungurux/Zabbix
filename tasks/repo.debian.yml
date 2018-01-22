@@ -1,0 +1,39 @@
+---
+
+- name: Install pre-req for installation of repo
+  apt:
+    name: curl
+    state: present
+
+- name: Get repo name for latest
+  get_url: 
+    url: "http://repo.zabbix.com/zabbix/{{ zabbix_version}}/debian/pool/main/z/zabbix-release/ | grep '{{ansible_distribution_release}}*_all.deb' | cut -f3 -d '>' | cut -f1 -d '<'"
+    dest: /tmp
+  register: repo_name
+  tags: 
+    - repo
+
+- set_fact:
+     ansible_zabbix_repo: "{{ repo_name }}"
+
+- name: Downloading zabix repo .deb file for latest repo
+  get_url:
+    url: "http://repo.zabbix.com/zabbix/{{ zabbix_version }}/debian/pool/main/z/zabbix-release/{{ ansible_zabbix_repo }}"
+    dest: /opt
+  tags: 
+    - repo
+
+- name: Install zabbix repo
+  apt: 
+    deb: "/opt/{{ ansible_zabbix_repo }}"
+    dpkg_options: 'post-invoke="apt-get -f install -y"'
+  ignore_errors: True
+  tags: 
+    - repo
+
+- name: Update packages repository
+  apt:
+    update_cache: yes
+    cache_valid_time: 1800
+  tags:
+    - repo 
