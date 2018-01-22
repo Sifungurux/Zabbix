@@ -6,15 +6,13 @@
     state: present
 
 - name: Get repo name for latest
-  get_url: 
-    url: "http://repo.zabbix.com/zabbix/{{ zabbix_version}}/debian/pool/main/z/zabbix-release/ | grep '{{ansible_distribution_release}}*_all.deb' | cut -f3 -d '>' | cut -f1 -d '<'"
-    dest: /tmp
+  shell: "curl http://repo.zabbix.com/zabbix/{{ zabbix_version }}/debian/pool/main/z/zabbix-release/ | grep {{ ansible_distribution_release }}_all.deb | cut -f3 -d '>' | cut -f1 -d '<'"
   register: repo_name
   tags: 
     - repo
 
 - set_fact:
-     ansible_zabbix_repo: "{{ repo_name }}"
+     ansible_zabbix_repo: "{{ repo_name.stdout }}"
 
 - name: Downloading zabix repo .deb file for latest repo
   get_url:
