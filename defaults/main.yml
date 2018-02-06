@@ -4,3 +4,9 @@
 zabbix_version: 3.4
 
 
+## Database connection ##
+#
+db_backend: mysql
+zabbix_db: zabbix
+zabbix_user: zabbix
+zabbix_pass: zabbix

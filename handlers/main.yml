@@ -1,1 +1,4 @@
 ---
+
+- name: restart zabbix server
+  service: name={{ zabbix_service }} state=restarted

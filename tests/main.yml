@@ -3,6 +3,8 @@
   become: yes
   become_method: sudo
   gather_facts: yes
+  vars:
+          - mysql_root_db_pass: 1234
   roles:
-          - { role: ../../ansible-zabbix }
-
+          - {role: bennojoy.mysql, mysql_db: [{name: zabbix}], mysql_users: [{name: zabbix, pass: zabbix, priv: "*.*:ALL"}]}
+          - ansible-zabbix 
