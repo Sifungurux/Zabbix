@@ -1,11 +1,4 @@
 ---
 
-
-- include_tasks: tasks/repo.debian.yml
-  when: ansible_os_family == "Debian" and ansible_zabbix_repo is undefined
-
-- include_tasks: tasks/repo.redhat.yml
-  when: ansible_os_family == "redhat"
-
-- include_tasks: tasks/install_zabbix_server.yml
-  when: ansible_os_family == "Debian" and ansible_zabbix_repo is defined
+- include_tasks: tasks/repo.{{ ansible_os_family }}.yml
+- include_tasks: tasks/install_zabbix_server.{{ ansible_os_family }}.yml
