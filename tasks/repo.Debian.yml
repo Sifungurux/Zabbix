@@ -31,6 +31,6 @@
 
 - name: Update packages repository
   apt: update_cache=yes
-  change_when: false
+  changed_when: false
   tags:
     - repo 
