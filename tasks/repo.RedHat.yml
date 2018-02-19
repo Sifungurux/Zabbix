@@ -1,0 +1,30 @@
+---
+
+- name: Get repo name for latest
+  get_url: url="http://repo.zabbix.com/zabbix/{{ zabbix_version  }}/rhel/7/x86_64/" dest=/tmp
+  changed_when: false
+  tags:
+    - repo
+
+- name: Cleaning repo file
+  shell: "grep zabbix-release /tmp/index.html | tail -n 1 | cut -f3 -d '>' | cut -f1 -d '<'"
+  register: repo_name
+  changed_when: false
+
+- set_fact:
+     ansible_zabbix_repo: "{{ repo_name.stdout }}"
+  tags: repo
+
+- name: Get latest Redhat zabbix repo
+  get_url:
+    url: "http://repo.zabbix.com/zabbix/{{ zabbix_version  }}/rhel/7/x86_64/{{ repo_name.stdout }}"
+    dest: /tmp
+  tags: 
+    - repo
+
+- name: install zabbix rpm from a local file
+  yum:
+    name: "/tmp/{{ repo_name.stdout }}"
+    state: present
+  tags:
+    - repo

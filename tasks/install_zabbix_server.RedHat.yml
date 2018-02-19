@@ -1,0 +1,36 @@
+---
+
+- name: install zabbix server
+  yum: pkg="{{ item }}" state=present
+  with_items:
+    - "zabbix-server-{{ db_backend }}" 
+    - "zabbix-web-{{ db_backend }}"
+  tags:
+    - install
+
+- name: Find correct folder for create sql script
+  shell: "ls /usr/share/doc/ | grep zabbix-server"
+  register: release
+
+- debug: msg="/usr/share/doc/{{release.stdout }}/create.sql.gz"
+
+- name: Unarchive a file that is already on the remote machine
+  stat: path="/usr/share/doc/{{ release.stdout }}/create.sql.gz"
+  register: DB_create_file
+  changed_when: false
+
+- name: Uncompress create.sql.ghz file
+  shell: "gunzip /usr/share/doc/{{ release.stdout }}/create.sql.gz"
+  when: DB_create_file.stat.exists == true
+
+- name: Restore database
+  mysql_db: name=zabbix login_user=zabbix_service login_password=pass_zabbix state=import target=/usr/share/doc/{{ release.stdout }}/create.sql
+  failed_when: false
+
+
+
+
+
+- name: Start zabbix-server service
+  service: name={{ zabbix_service  }} state=restarted enabled=yes
+
