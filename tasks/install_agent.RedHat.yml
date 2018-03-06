@@ -1,0 +1,12 @@
+---
+- name: Check if repo exit
+
+- name: Install zabbix repo
+
+- name: Install zabbix agent
+
+- name: Configure zabbix agent
+
+- name: Restart agent
+
+- name: add host to zabbix server
