@@ -19,7 +19,7 @@ Vagrant.configure("2") do |redhat|
   redhat.vm.provision :ansible do |ansible|
      ansible.limit = "all"
      #ansible.inventory_path = "test/hosts/vagrant"
-     ansible.playbook = "main.yml"
+     ansible.playbook = "server_main.yml"
      ansible.host_vars = {
        "zabbix" => {"note" => "This is s figlet server running CentOS"}
      }
@@ -30,3 +30,22 @@ Vagrant.configure("2") do |redhat|
   end
 end
 
+
+Vagrant.configure("2") do |redhat|
+  redhat.vm.box = "centos/7"
+  redhat.vm.define "zabbix-agent"
+  redhat.vm.hostname = "zabbix-agent"
+  redhat.vm.network "private_network", ip: "192.168.77.202"
+  redhat.vm.provision :ansible do |ansible|
+     ansible.limit = "all"
+     #ansible.inventory_path = "test/hosts/vagrant"
+     ansible.playbook = "agent_main.yml"
+     ansible.host_vars = {
+       "zabbix-agent" => {"note" => "This is s figlet server running CentOS"}
+     }
+     ansible.groups = {
+       "PRODUCTION" => ["zabbix-agent"],
+       "PRODUCTION:vars" => {"env" => "PRE-PRODUCTION", "warn" => "This is a pre-prod server - Think about what you are doing and BE CAREFULL"}
+      }
+  end
+end

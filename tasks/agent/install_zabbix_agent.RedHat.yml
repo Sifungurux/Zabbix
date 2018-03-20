@@ -1,11 +1,14 @@
 ---
 
-- name: Install zabbix repo
 
 - name: Install zabbix agent
+  yum: pkg=zabbix-agent state=present
+  tags:
+    - install
 
 - name: Configure zabbix agent
+  template: src=template/agent.conf dest=/etc/zabbix/zabbix-agent.conf mode=0644
 
-- name: Restart agent
+#- name: Restart agent
 
-- name: add host to zabbix server
+#- name: add host to zabbix server
