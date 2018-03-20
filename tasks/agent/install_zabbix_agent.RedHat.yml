@@ -7,7 +7,7 @@
     - install
 
 - name: Configure zabbix agent
-  template: src=template/agent.conf dest=/etc/zabbix/zabbix-agent.conf mode=0644
+  template: src=template/zabbix_agentd.conf dest=/etc/zabbix/zabbix_agentd.conf mode=0644
 
 #- name: Restart agent
 
