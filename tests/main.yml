@@ -6,6 +6,6 @@
   vars:
           - mysql_root_db_pass: 1234
   roles:
-          - ansible-hostname-aschii 
+          - ansible-hostname-aschii
           - {role: ansible-mysql, mysql_db: [{name: zabbix}], mysql_users: [{name: zabbix_service, pass: pass_zabbix, priv: "*.*:ALL"}]}
-          - ansible-zabbix 
+          - {role: ansible-zabbix, function: server}
