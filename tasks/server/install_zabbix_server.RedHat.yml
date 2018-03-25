@@ -23,5 +23,5 @@
   when: DB_create_file.stat.exists == true
 
 - name: Restore database
-  mysql_db: name=zabbix login_user=zabbix_service login_password=pass_zabbix state=import target=/usr/share/doc/{{ release.stdout }}/create.sql
+  mysql_db: name=zabbix login_user={{ zabbix_user }} login_password={{ zabbix_pass }} state=import target=/usr/share/doc/{{ release.stdout }}/create.sql
   failed_when: false

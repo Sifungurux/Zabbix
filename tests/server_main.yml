@@ -5,7 +5,9 @@
   gather_facts: yes
   vars:
           - mysql_root_db_pass: 1234
+          - zabbix_user: zabbix
+          - zabbix_pass: zabbix
   roles:
           - ansible-hostname-aschii
-          - {role: ansible-mysql, mysql_db: [{name: zabbix}], mysql_users: [{name: zabbix_service, pass: pass_zabbix, priv: "*.*:ALL"}]}
+          - {role: ansible-mysql, mysql_db: [{name: zabbix}], mysql_users: [{name: "{{ zabbix_user }}", pass: "{{zabbix_pass }}", priv: "*.*:ALL"}]}
           - {role: ansible-zabbix, function: server}
