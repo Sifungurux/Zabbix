@@ -1,4 +1,8 @@
 ---
 
-- name: restart zabbix server
+- name: restart zabbix
   service: name={{ zabbix_service }} state=restarted
+
+- name: restart webservice
+  service: name={{ apache_service_RedHat }} state=restarted
+

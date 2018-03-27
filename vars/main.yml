@@ -1,3 +1,5 @@
 ---
 
 zabbix_service: zabbix-server
+apache_service_RedHat: httpd
+apache_service_Debian: apache2

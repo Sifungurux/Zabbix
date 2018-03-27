@@ -2,4 +2,6 @@
 
 - include_tasks: tasks/repo/repo.{{ ansible_os_family }}.yml
 - include_tasks: "tasks/{{ function }}/install_zabbix_{{ function }}.{{ ansible_os_family }}.yml"
-- include_tasks: "tasks/{{ function }}/install_zabbix_{{ function }}.{{ansible_os_family }}.yml"
+- include_tasks: "tasks/{{ function }}/config_zabbix_{{ function }}.{{ ansible_os_family }}.yml"
+
+
