@@ -11,6 +11,7 @@
   template:
     src: templates/zabbix_server.conf.j2
     dest: /etc/zabbix/zabbix_server.conf
+  notify: restart zabbix
 
 - name: Setting up web configuration
   template:
@@ -21,6 +22,7 @@
   template:
     src: templates/php.ini.j2
     dest: /etc/php.ini
+  notify: restart webservice
 
 - name: Create SElinux file
   template:
@@ -28,13 +30,7 @@
     dest: /tmp/zabbix-server.te
 
 - name: SElinux config for zabbix
-  shell: checkmodule -M -m -o zabbix-server.mod /tmp/zabbix-server.te && semodule_package -o zabbix-server.pp -m zabbix-server.mod && semodule -i zabbix-server.pp
+  shell: checkmodule -M -m -o zabbix-server.mod /tmp/zabbix-server.te && semodule_package -o /tmp/zabbix-server.pp -m zabbix-server.mod && semodule -i /tmp/zabbix-server.pp
   changed_when: false
-                                         
-- name: Restart zabbix
-  shell: echo "Restarting zabbix"
   notify: restart zabbix
-
-- name: Restart webservice
-  shell: echo "Restarting webservice"
-  notify: restart webservice
+                                         
