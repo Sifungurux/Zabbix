@@ -1,0 +1,16 @@
+---
+
+- name: Create zabbix_server.conf.d
+  file: path=/etc/zabbix/zabbix_server.conf.d state=directory
+
+- name: Copy userperm script to server, remember to place in your script folder
+  copy:
+    src: "{{ zabbix_userperm_script_folder }}/{{ item.script }}"
+    dest: "/etc/zabbix/zabbix_server.conf.d/{{ item.name }}.conf"
+    owner: zabbix
+    group: zabbix
+    mode: 0700
+    backup: yes
+    validate: grep '^UserParameter=*' %s 
+  with_items:
+    - "{{ userperm }}"

@@ -1,0 +1,10 @@
+---
+
+- name: Configure zabbix agent
+  template: src=templates/zabbix_agentd.conf.j2 dest=/etc/zabbix/zabbix_agentd.conf mode=0644
+  notify: restart agent
+
+#- name: Restart agent
+
+#- name: add host to zabbix server
+

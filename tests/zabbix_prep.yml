@@ -1,0 +1,11 @@
+---
+- hosts: PRODUCTION
+  become: yes
+  become_method: sudo
+  gather_facts: yes
+
+  tasks:
+  - name: upgrade all packages
+    yum:
+      name: '*'
+      state: latest
