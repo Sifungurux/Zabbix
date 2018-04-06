@@ -8,9 +8,15 @@
   roles:
           - {role: ansible-mysql, mysql_db: [{name: zabbix}], mysql_users: [{name: "{{ zabbix_user }}", pass: "{{zabbix_pass }}", priv: "*.*:ALL"}]}
           - {role:  ansible-zabbix, 
-              zabbix_userperm_script_folder: "/home/jkp/",
-              userperm: [
+              userperm: 
+                      zabbix_userperm_script_folder: "/home/jkp/",
+                      [
                       { name: "test", script: "test.conf" },
                       { name: "test2", script: "test2.conf" }
-                      ]}
-
+                      ]
+              external_script: 
+                      zabbix_external_script_folde: "/home/jkp/",
+                      [
+                      { name: "test3", script: "test3.sh" }
+                      ]
+              }
