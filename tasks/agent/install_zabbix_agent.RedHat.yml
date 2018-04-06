@@ -1,13 +1,9 @@
 ---
 
-
 - name: Install zabbix agent
   yum: pkg=zabbix-agent state=present
   tags:
     - install
-
-- name: Configure zabbix agent
-  template: src=template/zabbix_agentd.conf dest=/etc/zabbix/zabbix_agentd.conf mode=0644
 
 #- name: Restart agent
 

@@ -3,8 +3,5 @@
   become: yes
   become_method: sudo
   gather_facts: yes
-  vars:
-          - mysql_root_db_pass: 1234
   roles:
-          - ansible-hostname-aschii
-          - {role: ansible-zabbix, function: agent}
+          - ansible-zabbix

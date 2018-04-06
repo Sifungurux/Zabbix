@@ -6,3 +6,5 @@
 - name: restart webservice
   service: name={{ apache_service_RedHat }} state=restarted
 
+- name: restart agent
+  service: name=zabbix-agent state=restarted

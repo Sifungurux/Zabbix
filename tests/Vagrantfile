@@ -12,40 +12,31 @@
 #end
 
 Vagrant.configure("2") do |redhat|
-  redhat.vm.box = "centos/7"
-  redhat.vm.define "zabbix"
-  redhat.vm.hostname = "zabbix"
-  redhat.vm.network "private_network", ip: "192.168.77.201"
-  redhat.vm.provision :ansible do |ansible|
-     ansible.limit = "all"
-     #ansible.inventory_path = "test/hosts/vagrant"
-     ansible.playbook = "server_main.yml"
-     ansible.host_vars = {
-       "zabbix" => {"note" => "This is s figlet server running CentOS"}
-     }
-     ansible.groups = {
-       "PRODUCTION" => ["zabbix"],
-       "PRODUCTION:vars" => {"env" => "PRE-PRODUCTION", "warn" => "This is a pre-prod server - Think about what you are doing and BE CAREFULL"}
+  redhat.vm.define "zabbix-server" do |zabbix|
+    zabbix.vm.box = "centos/7"
+    zabbix.vm.hostname = "zabbix-server"
+    zabbix.vm.network "private_network", ip: "192.168.77.201"
+  end
+  redhat.vm.define "zabbix-agent" do |zabbix_agent|
+    zabbix_agent.vm.box = "centos/7"
+    zabbix_agent.vm.hostname = "zabbix-agent"
+    zabbix_agent.vm.network "private_network", ip: "192.168.77.202"
+  end
+  redhat.vm.provision "ansible" do |ansible|
+    ansible.verbose = true
+    ansible.playbook = "zabbix_prep.yml"
+    ansible.host_vars = {
+        "zabbix-server" => {"zabbix_function"=>"server","note" => "Zabbix server running CentOS"},
+ 	"zabbix-agent" => {"note" => "This is s figlet server running CentOS"}
+      }
+      ansible.groups = {
+        "PRODUCTION" => ["zabbix-server", "zabbix-agent"],
+        "ZABBIX_SERVER" => ["zabbix-server"],
+        "PRODUCTION:vars" => {
+		"environ" => "PRE-PRODUCTION", 
+		"warn" => "This is a pre-prod server - Think about what you are doing and BE CAREFULL",
+		"zabbix_server" => "192.168.77.201",
+	}
       }
   end
 end
-
-
-#Vagrant.configure("2") do |redhat|
-#  redhat.vm.box = "centos/7"
-#  redhat.vm.define "zabbix-agent"
-#  redhat.vm.hostname = "zabbix-agent"
-#  redhat.vm.network "private_network", ip: "192.168.77.202"
-#  redhat.vm.provision :ansible do |ansible|
-#     ansible.limit = "all"
-#     #ansible.inventory_path = "test/hosts/vagrant"
-#     ansible.playbook = "agent_main.yml"
-#     ansible.host_vars = {
-#       "zabbix-agent" => {"note" => "This is s figlet server running CentOS"}
-#     }
-#     ansible.groups = {
-#       "PRODUCTION" => ["zabbix-agent"],
-#       "PRODUCTION:vars" => {"env" => "PRE-PRODUCTION", "warn" => "This is a pre-prod server - Think about what you are doing and BE CAREFULL"}
-#      }
-#  end
-#end

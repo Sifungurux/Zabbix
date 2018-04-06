@@ -1,13 +1,16 @@
 ---
-- hosts: PRODUCTION
+- hosts: PRODUCTION:&ZABBIX_SERVER
   become: yes
   become_method: sudo
   gather_facts: yes
   vars:
           - mysql_root_db_pass: 1234
-          - zabbix_user: zabbix
-          - zabbix_pass: zabbix
   roles:
-          - ansible-hostname-aschii
           - {role: ansible-mysql, mysql_db: [{name: zabbix}], mysql_users: [{name: "{{ zabbix_user }}", pass: "{{zabbix_pass }}", priv: "*.*:ALL"}]}
-          - {role: ansible-zabbix, function: server}
+          - {role:  ansible-zabbix, 
+              zabbix_userperm_script_folder: "/home/jkp/",
+              userperm: [
+                      { name: "test", script: "test.conf" },
+                      { name: "test2", script: "test2.conf" }
+                      ]}
+
