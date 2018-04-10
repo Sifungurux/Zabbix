@@ -1,10 +1,10 @@
 ---
 
 - name: restart zabbix
-  service: name={{ zabbix_service }} state=restarted
+  service: name={{ zabbix_service }} state=restarted enabled=yes
 
 - name: restart webservice
-  service: name={{ apache_service_RedHat }} state=restarted
+  service: name={{ apache_service_RedHat }} state=restarted enabled=yes
 
 - name: restart agent
-  service: name=zabbix-agent state=restarted
+  service: name=zabbix-agent state=restarted enabled=yes

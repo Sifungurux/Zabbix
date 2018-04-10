@@ -10,6 +10,7 @@
   shell: "grep zabbix-release /tmp/index.html | tail -n 1 | cut -f3 -d '>' | cut -f1 -d '<'"
   register: repo_name
   changed_when: false
+  tags: repo
 
 - set_fact:
      ansible_zabbix_repo: "{{ repo_name.stdout }}"

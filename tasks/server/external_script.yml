@@ -1,0 +1,13 @@
+---
+
+- name: Copy external script to server, remember to place in your script folder
+  copy:
+    src: "{{ external_dir }}/{{ item.script }}"
+    dest: "/etc/zabbix/zabbix_server.conf.d/{{ item.script }}"
+    owner: zabbix
+    group: zabbix
+    mode: 0700
+    backup: yes
+    validate: head -n1 | grep '^#!*' %s 
+  with_items:
+    - "{{ external_script }}"

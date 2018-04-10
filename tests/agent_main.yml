@@ -4,4 +4,12 @@
   become_method: sudo
   gather_facts: yes
   roles:
-          - ansible-zabbix
+          - {role: ansible-zabbix,
+               userperm_dir: "/home/jkp/",
+               userperm:
+#                 [
+#                 { name: "test", script: "test.conf" },
+#                 { name: "test2", script: "test2.conf" }
+#                 ]
+            }
+

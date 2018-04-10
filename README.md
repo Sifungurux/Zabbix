@@ -42,9 +42,20 @@ Add role with
 ```
     - ansible-zabbix
 ```
+Installing agent from commandline
+---------------------------------
+
+Running this command will install zabbix agent.
+```
+ansible-playbook agent_main.yml -i inventory --tags "repo, agent.install" -l zabbix-agent
+```
+Install userparameters for the zabbix agent
+------------------------------------------
+```
+ansible-playbook agent_main.yml -i inventory --tags "userparam" -l zabbix-agent --extra-vars '{"userparam_dir":"/userparm_dir", "userperm":[{"name": "test", "script":"test.conf"},{ "name":"test2", "script":"test2.conf"}]}'
+```
+
 Things missing:
-Configuration - webinterface
-installation and config - agent
 Test - agent install on host and add it to zabbix server
 
 

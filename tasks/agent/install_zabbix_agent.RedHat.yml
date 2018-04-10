@@ -3,8 +3,4 @@
 - name: Install zabbix agent
   yum: pkg=zabbix-agent state=present
   tags:
-    - install
-
-#- name: Restart agent
-
-#- name: add host to zabbix server
+    - agent.install

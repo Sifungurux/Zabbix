@@ -1,8 +1,20 @@
 ---
 
 - include_tasks: tasks/repo/repo.{{ ansible_os_family }}.yml
-- include_tasks: "tasks/{{ zabbix_function }}/install_zabbix_{{ zabbix_function }}.{{ ansible_os_family }}.yml"
-- include_tasks: "tasks/{{ zabbix_function }}/config_zabbix_{{ zabbix_function }}.{{ ansible_os_family }}.yml"
+  tags: 
+    - repo
 
-- include_tasks: "tasks/{{ zabbix_function }}/userperm.yml"
-  when: userperm is defined
+- include_tasks: "tasks/{{ zabbix_function }}/install_zabbix_{{ zabbix_function }}.{{ ansible_os_family }}.yml"
+  tags:
+    - "{{ zabbix_function }}.install"
+
+- include_tasks: "tasks/{{ zabbix_function }}/config_zabbix_{{ zabbix_function }}.{{ ansible_os_family }}.yml"
+  tags:
+    - "install-{{ zabbix_function }}.install"
+    - "config-{{ zabbix_function }}.config"
+
+- include_tasks: "tasks/{{ zabbix_function }}/userparam.yml"
+  tags: 
+    - userparam
+- include_tasks: "tasks/{{ zabbix_function }}/external_script.yml"
+  when: external_script is defined
