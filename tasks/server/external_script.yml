@@ -2,8 +2,8 @@
 
 - name: Create zabbix_server.conf.d
   file: path={{ external_script_dir | default('/usr/lib/zabbix/externalscripts/')}} state=directory
-  tags:
-    - externalScript
+  notify: rebuild
+  tags: externalScript
 
 - name: Copy external script to server, remember to place in your script folder
   copy:
@@ -15,12 +15,4 @@
     backup: yes
   with_items:
     - "{{ external_script }}"
-  tags: externalScript
-
-- stat:
-    path: "{{ external_script_dir }}"
-  register: sym
-
-- debug:
-    msg: sym.stdout
   tags: externalScript

@@ -8,3 +8,6 @@
 
 - name: restart agent
   service: name=zabbix-agent state=restarted enabled=yes
+
+- name: rebuild
+  template: src=templates/zabbix_server.conf.j2 dest=/etc/zabbix/zabbix_server.conf

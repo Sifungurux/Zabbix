@@ -8,13 +8,14 @@
 - name: Copy userperm script to server, remember to place in your script folder
   copy:
     src: "{{ userperm_dir }}/{{ item.script }}"
-    dest: "/etc/zabbix/zabbix_server.conf.d/{{ item.name }}.conf"
+    dest: "/etc/zabbix/zabbix_agentd.d/{{ item.name }}.conf"
     owner: zabbix
     group: zabbix
-    mode: 0700
+    mode: 0644
     backup: yes
-    validate: grep '^UserParameter=*' %s 
+    validate: grep '^UserParameter=.*\[\*], .*' %s 
   with_items:
     - "{{ userperm }}"
+  notify: restart agent
   tags:
     - userparam

@@ -11,4 +11,6 @@ zabbix_db: zabbix
 zabbix_user: zabbix
 zabbix_pass: zabbix
 
-external_script_dir: "/etc/zabbix/test_externalscripts"
+external_script_dir: "/etc/zabbix/externalscripts"
+tls: false
+ssl: false
