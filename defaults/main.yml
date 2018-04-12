@@ -10,3 +10,5 @@ db_backend: mysql
 zabbix_db: zabbix
 zabbix_user: zabbix
 zabbix_pass: zabbix
+
+external_script_dir: "/etc/zabbix/test_externalscripts"

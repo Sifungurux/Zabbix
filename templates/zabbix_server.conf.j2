@@ -498,7 +498,7 @@ AlertScriptsPath=/usr/lib/zabbix/alertscripts
 # Default:
 # ExternalScripts=${datadir}/zabbix/externalscripts
 
-ExternalScripts=/usr/lib/zabbix/externalscripts
+ExternalScripts={{ external_script_dir | default('/usr/lib/zabbix/externalscripts') }}
 
 ### Option: FpingLocation
 #       Location of fping.
