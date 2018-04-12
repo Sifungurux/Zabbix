@@ -599,34 +599,9 @@ LogSlowQueries=3000
 # Include=/usr/local/etc/zabbix_server.general.conf
 # Include=/usr/local/etc/zabbix_server.conf.d/
 # Include=/usr/local/etc/zabbix_server.conf.d/*.conf
-{% if userperm  %}
+{% if tls | ssl  %}
 Include=/etc/zabbix/zabbix_server.conf.d/*.conf
 {% endif %}
-
-### Option: SSLCertLocation
-#       Location of SSL client certificates.
-#       This parameter is used only in web monitoring.
-#
-# Mandatory: no
-# Default:
-# SSLCertLocation=${datadir}/zabbix/ssl/certs
-
-### Option: SSLKeyLocation
-#       Location of private keys for SSL client certificates.
-#       This parameter is used only in web monitoring.
-#
-# Mandatory: no
-# Default:
-# SSLKeyLocation=${datadir}/zabbix/ssl/keys
-
-### Option: SSLCALocation
-#       Override the location of certificate authority (CA) files for SSL server certificate verification.
-#       If not set, system-wide directory will be used.
-#       This parameter is used only in web monitoring and SMTP authentication.
-#
-# Mandatory: no
-# Default:
-# SSLCALocation=
 
 ####### LOADABLE MODULES #######
 
@@ -647,34 +622,3 @@ Include=/etc/zabbix/zabbix_server.conf.d/*.conf
 # Mandatory: no
 # Default:
 # LoadModule=
-
-####### TLS-RELATED PARAMETERS #######
-
-### Option: TLSCAFile
-#       Full pathname of a file containing the top-level CA(s) certificates for
-#       peer certificate verification.
-#
-# Mandatory: no
-# Default:
-# TLSCAFile=
-
-### Option: TLSCRLFile
-#       Full pathname of a file containing revoked certificates.
-#
-# Mandatory: no
-# Default:
-# TLSCRLFile=
-
-### Option: TLSCertFile
-#       Full pathname of a file containing the server certificate or certificate chain.
-#
-# Mandatory: no
-# Default:
-# TLSCertFile=
-
-### Option: TLSKeyFile
-#       Full pathname of a file containing the server private key.
-#
-# Mandatory: no
-# Default:
-# TLSKeyFile=
