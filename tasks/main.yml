@@ -10,8 +10,13 @@
 
 - include_tasks: "tasks/{{ zabbix_function }}/config_zabbix_{{ zabbix_function }}.{{ ansible_os_family }}.yml"
   tags:
-    - "install-{{ zabbix_function }}.install"
-    - "config-{{ zabbix_function }}.config"
+    - "{{ zabbix_function }}.install"
+    - "{{ zabbix_function }}.config"
+
+- include_tasks: "tasks/{{ zabbix_function }}/zabbix_add_host.yml"
+  tags:
+    - agent.install
+    - add.host
 
 - include_tasks: "tasks/{{ zabbix_function }}/userparam.yml"
   tags: 
