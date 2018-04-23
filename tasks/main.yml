@@ -24,3 +24,6 @@
 - include_tasks: "tasks/{{ zabbix_function }}/external_script.yml"
   when: external_script is defined
   tags: externalScript
+
+- include_tasks: tasks/server/zabbix-screens.yml
+  tags: config.screen
