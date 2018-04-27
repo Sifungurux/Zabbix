@@ -54,6 +54,11 @@ Install userparameters for the zabbix agent
 ```
 ansible-playbook agent_main.yml -i inventory --tags "userparam" -l zabbix-agent --extra-vars '{"userparam_dir":"/userparm_dir", "userperm":[{"name": "test", "script":"test.conf"},{ "name":"test2", "script":"test2.conf"}]}'
 ```
+Creating, updating and deleting screens
+---------------------------------------
+```
+ansible-playbook agent_main.yml -i inventory --tags "config_screen" -l zabbix-server --extra-vars '{"config_screens":[{"admin": "admin", "pass":"zabbix", "screenname":"test", "host_group":"Linux servers"}]}'
+```
 
 Things missing:
 Test - agent install on host and add it to zabbix server
