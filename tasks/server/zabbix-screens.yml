@@ -5,16 +5,17 @@
 - name: Create a new screen or update an existing screen's items
   local_action:
     module: zabbix_screen
-    server_url: http://192.168.77.201/zabbix
-    login_user: admin
-    login_password: zabbix
+    server_url: http://{{zabbix_server}}/zabbix
+    login_user: "{{ item.admin }}"
+    login_password: "{{ item.pass }}"
     screens:
-      - screen_name: Linux servers
-        host_group: Linux servers
+      - screen_name: "{{ item.screenname }}"
+        host_group: "{{ item.host_group }}"
         state: present
         graph_names:
           - CPU load
-        graph_width: 400
-        graph_height: 100
+        graph_width: "{{ item.width | default(graph_width) }}"
+        graph_height: "{{ item.width | default(graph_height) }}"
+  with_items: "{{ config_screens }}"
   become: false
   tags: config.screen

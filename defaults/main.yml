@@ -14,3 +14,8 @@ zabbix_pass: zabbix
 external_script_dir: "/etc/zabbix/externalscripts"
 tls: false
 ssl: false
+
+## screen variables
+#
+graph_width: 200
+graph_height: 100
