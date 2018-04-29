@@ -17,5 +17,5 @@ ssl: false
 
 ## screen variables
 #
-graph_width: 200
+graph_width: 500
 graph_height: 100

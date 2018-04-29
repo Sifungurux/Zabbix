@@ -1,0 +1,17 @@
+---
+- hosts: PRODUCTION
+  become: yes
+  become_method: sudo
+  gather_facts: yes
+  vars:
+    config_screens:
+      admin: "admin"
+      pass: "zabbix"
+      screen_name: "test"
+      host_group: "Linux servers"
+      graph:
+        - "CPU load"
+        - "CPU jumps"
+  roles:
+    - ansible-zabbix
+
