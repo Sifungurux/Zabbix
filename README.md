@@ -57,7 +57,13 @@ ansible-playbook agent_main.yml -i inventory --tags "userparam" -l zabbix-agent 
 Creating, updating and deleting screens
 ---------------------------------------
 ```
+Creating a screen without graphs - POC
 ansible-playbook agent_main.yml -i inventory --tags "config_screen" -l zabbix-server --extra-vars '{"config_screens":[{"admin": "admin", "pass":"zabbix", "screenname":"test", "host_group":"Linux servers"}]}'
+```
+
+Creating a screen with multiple graphs e.g the 'CPU load' and the 'CPU jumps'
+```
+ansible-playbook agent_main.yml -i .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory --tags "config.screen" -l zabbix-server --extra-vars "{'config_screens':[{'admin': 'admin', 'pass':'zabbix', 'screen_name':'test2', 'host_group':'Linux servers', 'graph':'[\"CPU load\", \"CPU jumps\"]'}]}"
 ```
 
 Things missing:
