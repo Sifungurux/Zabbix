@@ -42,6 +42,48 @@ Add role with
 ```
     - ansible-zabbix
 ```
+Install zabbix play
+*******************
+```
+---
+- hosts: PRODUCTION:&ZABBIX_SERVER
+  become: yes
+  become_method: sudo
+  gather_facts: yes
+  vars:
+    - mysql_root_db_pass: 1234 # Remenber to change it!
+  roles:
+    - {role: ansible-mysql, mysql_db: [{name: zabbix}], mysql_users: [{name: "{{ zabbix_user }}", pass: "{{zabbix_pass }}", priv: "*.*:ALL"}]}
+    - ansible-zabbix
+## Zabbix db variables are set in default/main.yml ##
+## Declare them local in play here by add
+    - mysql_db: zabbix
+    - mysql_users: zabbix
+    - zabbix_pass: ****
+``` 
+
+Add screen with from playbook
+*****************************
+```
+---
+- hosts: PRODUCTION
+  become: yes
+  become_method: sudo
+  gather_facts: yes
+  vars:
+    config_screens:
+      admin: "admin"
+      pass: "zabbix"
+      screen_name: "test"
+      host_group: "Linux servers"
+      graph:
+        - "CPU load"
+        - "CPU jumps"
+  roles:
+    - ansible-zabbix
+
+``` 
+
 Installing agent from commandline
 ---------------------------------
 
