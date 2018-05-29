@@ -15,6 +15,13 @@ external_script_dir: "/etc/zabbix/externalscripts"
 tls: false
 ssl: false
 
+### Proxy Config ###
+prxyMode: 0                                     # 0 - passive mode, 1 - aktive mode
+
+zabbix_proxy_db: zabbixProxy
+zabbix_proxy_user: zabbixProxy
+zabbix_proxy_pass: zabbixProxy
+
 ## screen variables
 #
 graph_width: 500

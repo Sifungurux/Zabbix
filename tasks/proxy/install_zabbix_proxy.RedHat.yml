@@ -1,0 +1,33 @@
+---
+
+- name: install zabbix proxy
+  yum: pkg="zabbix-proxy-{{ db_backend }}" state=present
+  tags:
+    - proxy.install
+
+- name: Find correct folder for create sql script
+  shell: "ls /usr/share/doc/ | grep zabbix-proxy"
+  register: release
+  changed_when: false
+  tags:
+    - proxy.install
+
+- name: "Unarchive a file that is already on the remote machine {{ release.stdout  }}"
+  stat: path="/usr/share/doc/{{ release.stdout }}/schema.sql.gz"
+  register: DB_schema_file
+  changed_when: false
+  tags:
+    - proxy.install
+
+- name: Uncompress create.sql.ghz file
+  shell: "gunzip /usr/share/doc/{{ release.stdout }}/schema.sql.gz"
+  when: DB_schema_file.stat.exists == true
+  tags:
+    - proxy.install
+
+- name: Restore database
+  mysql_db: name={{zabbix_proxy_db}} login_user={{ zabbix_proxy_user }} login_password={{ zabbix_proxy_pass }} state=import target=/usr/share/doc/{{ release.stdout }}/schema.sql
+  failed_when: false
+  notify: rebuild
+  tags:
+    - proxy.install

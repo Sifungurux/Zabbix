@@ -4,26 +4,38 @@
   tags: 
     - repo
 
+- name: Install mariaDB for server
+  include_role:
+    name: ansible-mysql
+  vars:
+    mysql_root_db_pass: {{ proxy_db_pass }}
+    mysql_db: { name: "{{ zabbix_proxy_db }}"}
+    mysql_users: { name: "{{ zabbix_proxy_db }}", pass: "{{zabbix_proxy_pass }}", , priv: "*.*:ALL"}
+
+
 - include_tasks: "tasks/{{ zabbix_function }}/install_zabbix_{{ zabbix_function }}.{{ ansible_os_family }}.yml"
-  tags:
+  tags: 
     - "{{ zabbix_function }}.install"
 
 - include_tasks: "tasks/{{ zabbix_function }}/config_zabbix_{{ zabbix_function }}.{{ ansible_os_family }}.yml"
   tags:
-    - "{{ zabbix_function }}.install"
     - "{{ zabbix_function }}.config"
 
 - include_tasks: "tasks/{{ zabbix_function }}/zabbix_add_host.yml"
+  when : zabbix_function == "agent"
   tags:
-    - agent.install
+    - "{{ zabbix_function }}.install"
     - add.host
 
-- include_tasks: "tasks/{{ zabbix_function }}/userparam.yml"
+- include_tasks: "tasks/agent/userparam.yml"
+  when : userparam is defined
   tags: 
     - userparam
+
 - include_tasks: "tasks/{{ zabbix_function }}/external_script.yml"
   when: external_script is defined
   tags: externalScript
 
 - include_tasks: tasks/server/zabbix-screens.yml
+  when : zabbix_function == "server"
   tags: config.screen
