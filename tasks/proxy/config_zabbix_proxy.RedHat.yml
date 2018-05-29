@@ -1,0 +1,24 @@
+---
+
+- name: install policycoreutils-python
+  yum: pkg=policycoreutils-python state=present
+  tags: proxy.config
+
+- name: Setting up proxy configuration
+  template:
+    src: templates/zabbix_proxy.conf.j2
+    dest: /etc/zabbix/zabbix_proxy.conf
+  notify: restart proxy
+  
+- name: Create SElinux file
+  template:
+    src: templates/selinux.j2
+    dest: /tmp/zabbix-proxy.te
+  register: SElinux
+  notify: restart proxy
+
+- name: SElinux config for zabbix
+  shell: checkmodule -M -m -o zabbix-proxy.mod /tmp/zabbix-proxy.te && semodule_package -o /tmp/zabbix-proxy.pp -m zabbix-proxy.mod && semodule -i /tmp/zabbix-proxy.pp
+  changed_when: false
+  when: SElinux.changed
+  notify: restart proxy                  
