@@ -3,11 +3,8 @@
   become: yes
   become_method: sudo
   gather_facts: yes
-  vars:
-          - mysql_root_db_pass: 1234
   roles:
-          - {role: ansible-mysql,tags: ['proxy.install'], mysql_db: [{name: "{{ zabbix_proxy_db }}"}], mysql_users: [{name: "{{ zabbix_proxy_user }}", pass: "{{zabbix_proxy_pass }}", priv: "*.*:ALL"}]}
-          - {role: ansible-zabbix, zabbix_function: proxy, tags: ['proxy.install','proxy.config'] }
+    - ansible-zabbix
             
 
 - hosts: PRODUCTION:!ZABBIX_SERVER:!ZABBIX_PROXIES

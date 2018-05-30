@@ -1,0 +1,10 @@
+---
+- hosts: PRODUCTION
+  become: yes
+  become_method: sudo
+  gather_facts: yes
+  tasks:
+  - name: rebuild agent config
+    template: src=templates/zabbix_agentd.conf.j2 dest=/etc/zabbix/zabbix_agentd.conf mode=0644
+    notify: restart agent
+
