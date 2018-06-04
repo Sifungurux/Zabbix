@@ -20,7 +20,12 @@
     - proxy.config
     - server.config
 
-- include_tasks: "tasks/{{ zabbix_function }}/zabbix_add_host.yml"
+- include_tasks: "tasks/agent/zabbix_add_host.yml"
+  tags:
+    - agent.install
+    - add.host
+
+- include_tasks: "tasks/proxy/zabbix_add_proxy.yml"
   tags:
     - agent.install
     - add.host
