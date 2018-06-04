@@ -21,7 +21,7 @@ Vagrant.configure("2") do |redhat|
     ansible.host_vars = {
        	"zabbix-server" => {"zabbix_function" => "server","note" => "Zabbix server running CentOS"},
        	"zabbix-agent" => {"note" => "This is s figlet server running CentOS"},
-       	"zabbix-proxy" => {"zabbix_function" => "proxy","note" => "Running role - Zabbix Proxy server"}
+       	"zabbix-proxy" => {"note" => "Running role - Zabbix Proxy server"}
       }
       ansible.groups = {
         "PRODUCTION" => ["zabbix-server", "zabbix-agent", "zabbix-proxy"],

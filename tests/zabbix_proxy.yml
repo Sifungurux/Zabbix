@@ -3,6 +3,8 @@
   become: yes
   become_method: sudo
   gather_facts: yes
+  vars:
+    - zabbix_function: proxy
   roles:
     - ansible-zabbix
             

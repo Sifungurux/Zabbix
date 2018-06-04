@@ -2,35 +2,55 @@
 
 - name: install policycoreutils-python
   yum: pkg=policycoreutils-python state=present
-
+  tags:
+    - server.install
+    - server.config
+    
 - name: Set selinux perms
   shell: setsebool -P httpd_can_connect_zabbix on && setsebool -P httpd_can_network_connect_db on
   changed_when: false
-  
+  tags:
+    - server.install
+    - server.config
+
 - name: Setting up server configuration
   template:
     src: templates/zabbix_server.conf.j2
     dest: /etc/zabbix/zabbix_server.conf
   notify: restart zabbix
+  tags:
+    - server.install
+    - server.config
 
 - name: Setting up web configuration
   template:
     src: templates/zabbix.conf.php.j2
     dest: /etc/zabbix/web/zabbix.conf.php
+  tags:
+    - server.install
+    - server.config
 
 - name: Setting up php configuration
   template:
     src: templates/php.ini.j2
     dest: /etc/php.ini
   notify: restart webservice
+  tags:
+    - server.install
+    - server.config
 
 - name: Create SElinux file
   template:
     src: templates/selinux.j2
     dest: /tmp/zabbix-server.te
-
+  tags:
+    - server.install
+    - server.config
+    
 - name: SElinux config for zabbix
   shell: checkmodule -M -m -o zabbix-server.mod /tmp/zabbix-server.te && semodule_package -o /tmp/zabbix-server.pp -m zabbix-server.mod && semodule -i /tmp/zabbix-server.pp
   changed_when: false
   notify: restart zabbix
-                                         
+  tags:
+    - server.install                                         
+    - server.config

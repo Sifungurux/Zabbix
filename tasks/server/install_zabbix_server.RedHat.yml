@@ -1,15 +1,16 @@
 ---
 
-- name: Install mariaDB for proxy
+- name: Install mariaDB for server
   include_role:
-    name: ansible-mysql
+    name: { role: ansible-mysql, tags: [ 'mysql' ]}
   vars:
     mysql_root_db_pass: "{{ db_pass }}"
-    mysql_db: { name: "{{ zabbix_db }}"}
-    mysql_users: { name: "{{ zabbix_db }}", pass: "{{zabbix_pass }}", , priv: "*.*:ALL"}
+    mysql_db: [{ name: "{{ zabbix_db }}"}]
+    mysql_users: [{ name: "{{ zabbix_db }}", pass: "{{zabbix_pass }}", priv: "*.*:ALL"}]
+  when: db_backend == "mysql"
   tags: 
     - server.install
-
+  
 - name: install zabbix server
   yum: pkg="{{ item }}" state=present
   with_items:

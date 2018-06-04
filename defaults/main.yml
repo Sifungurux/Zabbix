@@ -4,6 +4,9 @@ zabbix_server: ansible_default_ipv4
 zabbix_version: 3.4
 zabbix_function: agent #default zabbix_function will be set to agent. Choose/Set function on server in inventory file
 
+# Database password
+db_pass: 1234
+
 ## Database connection ##
 #
 db_backend: mysql
@@ -11,7 +14,7 @@ zabbix_db: zabbix
 zabbix_user: zabbix
 zabbix_pass: zabbix
 
-external_script_dir: "/etc/zabbix/externalscripts"
+external_script_dir: "/var/lib/zabbix/externalscripts"
 tls: false
 ssl: false
 

@@ -2,7 +2,10 @@
 
 - include_tasks: tasks/repo/repo.{{ ansible_os_family }}.yml
   tags: 
-    - repo
+    - repo    
+    - agent.install
+    - server.install
+    - proxy.install
 
 - include_tasks: "tasks/{{ zabbix_function }}/install_zabbix_{{ zabbix_function }}.{{ ansible_os_family }}.yml"
   tags: 
@@ -16,7 +19,6 @@
     - server.install
     - proxy.config
     - server.config
-
 
 - include_tasks: "tasks/{{ zabbix_function }}/zabbix_add_host.yml"
   tags:
