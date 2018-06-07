@@ -11,8 +11,11 @@
 # Mandatory: no
 # Default:
 # ProxyMode=0
-ProxyMode={{ ProxyMode | default('0') }}
-
+{% if proxyMode == 'active' %}
+ProxyMode=0
+{% elif proxyMode == 'passive' %}
+ProxyMode=1
+{% endif %}
 ### Option: Server
 #       IP address (or hostname) of Zabbix server.
 #       Active proxy will get configuration data from the server.

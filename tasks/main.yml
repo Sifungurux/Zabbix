@@ -27,8 +27,8 @@
 
 - include_tasks: "tasks/proxy/zabbix_add_proxy.yml"
   tags:
-    - agent.install
-    - add.host
+    - proxy.install
+    - add.proxy
 
 - include_tasks: "tasks/agent/userparam.yml"
   when : userparam is defined

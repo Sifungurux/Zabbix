@@ -19,7 +19,7 @@ tls: false
 ssl: false
 
 ### Proxy Config ###
-prxyMode: 0                                     # 0 - passive mode, 1 - aktive mode
+proxyMode: active                                   # 0 - passive mode, 1 - aktive mode
 
 proxy_db_pass: 1234
 zabbix_proxy_db: zabbixProxy
@@ -30,3 +30,6 @@ zabbix_proxy_pass: zabbixProxy
 #
 graph_width: 500
 graph_height: 100
+
+
+proxy: false

@@ -4,7 +4,10 @@
   local_action: command whoami
   become: false
   register: username_on_the_host
-  tags: agent.install
+  changed_when: false
+  tags: 
+    - agent.install
+    - add.host
 
 - name: Create a new host or update an existing host's info
   local_action:
@@ -13,14 +16,15 @@
     login_user: admin
     login_password: zabbix
     host_name: "{{ ansible_fqdn }}"
-    visible_name: " {{ ansible_hostname }}"
+    visible_name: " {{ ansible_hostname }}"   
+    description: My ExampleHost Description
     host_groups:
-      - Linux servers
+      - "{{ ansible_system }} servers"
     link_templates:
-      - Template OS Linux 
+      - "Template OS {{ ansible_system }}"
     status: enabled
     state: present
-    inventory_mode: automatic
+    inventory_mode: automatic 
     interfaces:
       - type: 1
         main: 1
