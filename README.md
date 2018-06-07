@@ -50,10 +50,7 @@ Install zabbix play
   become: yes
   become_method: sudo
   gather_facts: yes
-  vars:
-    - mysql_root_db_pass: 1234 # Remenber to change it!
   roles:
-    - {role: ansible-mysql, mysql_db: [{name: zabbix}], mysql_users: [{name: "{{ zabbix_user }}", pass: "{{zabbix_pass }}", priv: "*.*:ALL"}]}
     - ansible-zabbix
 ## Zabbix db variables are set in default/main.yml ##
 ## Declare them local in play here by add
@@ -89,26 +86,32 @@ Installing agent from commandline
 
 Running this command will install zabbix agent.
 ```
-ansible-playbook agent_main.yml -i inventory --tags "repo, agent.install" -l zabbix-agent
+ansible-playbook zabbix.yml -i inventory --tags "repo, agent.install" -l zabbix-agent
 ```
 Install userparameters for the zabbix agent
 ------------------------------------------
 ```
-ansible-playbook agent_main.yml -i inventory --tags "userparam" -l zabbix-agent --extra-vars '{"userparam_dir":"/userparm_dir", "userperm":[{"name": "test", "script":"test.conf"},{ "name":"test2", "script":"test2.conf"}]}'
+ansible-playbook zabbix.yml -i inventory --tags "userparam" -l zabbix-agent --extra-vars '{"userparam_dir":"/userparm_dir", "userperm":[{"name": "test", "script":"test.conf"},{ "name":"test2", "script":"test2.conf"}]}'
 ```
 Creating, updating and deleting screens
 ---------------------------------------
 ```
 Creating a screen without graphs - POC
-ansible-playbook agent_main.yml -i inventory --tags "config_screen" -l zabbix-server --extra-vars '{"config_screens":[{"admin": "admin", "pass":"zabbix", "screenname":"test", "host_group":"Linux servers"}]}'
+ansible-playbook zabbix.yml -i inventory --tags "config_screen" -l zabbix-server --extra-vars '{"config_screens":[{"admin": "admin", "pass":"zabbix", "screenname":"test", "host_group":"Linux servers"}]}'
 ```
 
 Creating a screen with multiple graphs e.g the 'CPU load' and the 'CPU jumps'
 ```
-ansible-playbook agent_main.yml -i .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory --tags "config.screen" -l zabbix-server --extra-vars "{'config_screens':[{'admin': 'admin', 'pass':'zabbix', 'screen_name':'test2', 'host_group':'Linux servers', 'graph':'[\"CPU load\", \"CPU jumps\"]'}]}"
+ansible-playbook zabbix.yml -i inventory --tags "config.screen" -l zabbix-server --extra-vars "{'config_screens':[{'admin': 'admin', 'pass':'zabbix', 'screen_name':'test2', 'host_group':'Linux servers', 'graph':'[\"CPU load\", \"CPU jumps\"]'}]}"
 ```
 
-Things missing:
-Test - agent install on host and add it to zabbix server
+```
+ ansible-playbook zabbix.yml -i .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory --tags "agent.install"
+ ```
+
+ Install proxy
+ installing proxy will reload config on server in chosen group. Change group to affect in zabbix_proxy.yml
+
+ ansible-playbook zabbix_proxy.yml -i .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory --tags "mysql, proxy.install"
 
 
